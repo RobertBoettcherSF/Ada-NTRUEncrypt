@@ -6,7 +6,7 @@ package NTRU
   with SPARK_Mode => On
 is
    -- Custom types for algorithm-specific data
-   type Degree_Type is range 0 .. N - 1;
+   subtype Degree_Type is Natural range 0 .. N - 1;
    type Coefficient_Type is new Integer;
    
    -- Polynomial represented as an array of coefficients (from X^0 to X^(N-1))
