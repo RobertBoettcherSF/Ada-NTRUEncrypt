@@ -25,28 +25,28 @@ procedure Tests is
    -- ==========================================
    
    -- Polynomials F, G
-   F : constant Polynomial := (-1, 1, 1, 0, -1, 0, 1, 0, 0, 1, -1);
-   G : constant Polynomial := (-1, 0, 1, 1, 0, 1, 0, 0, -1, 0, -1);
+   F : constant Polynomial := [-1, 1, 1, 0, -1, 0, 1, 0, 0, 1, -1];
+   G : constant Polynomial := [-1, 0, 1, 1, 0, 1, 0, 0, -1, 0, -1];
    
    -- Expected Key Pairs
-   Expected_Fp : constant Polynomial := (1, 2, 0, 2, 2, 1, 0, 2, 1, 2, 0);
-   Expected_Fq : constant Polynomial := (5, 9, 6, 16, 4, 15, 16, 22, 20, 18, 30);
-   Expected_PK : constant Polynomial := (14, 11, 26, 24, 14, 16, 30, 7, 25, 6, 19);
+   Expected_Fp : constant Polynomial := [1, 2, 0, 2, 2, 1, 0, 2, 1, 2, 0];
+   Expected_Fq : constant Polynomial := [5, 9, 6, 16, 4, 15, 16, 22, 20, 18, 30];
+   Expected_PK : constant Polynomial := [14, 11, 26, 24, 14, 16, 30, 7, 25, 6, 19];
 
    -- Message and Random Polynomial
-   M : constant Polynomial := (-1, 0, 0, 1, -1, 0, 0, 0, -1, 1, 1);
-   R : constant Polynomial := (-1, 1, 1, 1, 0, -1, 0, -1, 0, -1, 0);
+   M : constant Polynomial := [-1, 0, 0, 1, -1, 0, 0, 0, -1, 1, 1];
+   R : constant Polynomial := [-1, 1, 1, 1, 0, -1, 0, -1, 0, -1, 0];
    
    -- Expected Ciphertext and intermediates
-   Expected_E  : constant Polynomial := (14, 7, 10, 22, 19, 15, 28, 18, 10, 2, 25);
-   Expected_A  : constant Polynomial := (3, -10, 0, -13, -4, 4, 11, -14, -1, -6, 2);
-   Expected_B  : constant Polynomial := (0, -1, 0, -1, -1, 1, -1, 1, -1, 0, -1);
+   Expected_E  : constant Polynomial := [14, 7, 10, 22, 19, 15, 28, 18, 10, 2, 25];
+   Expected_A  : constant Polynomial := [3, -10, 0, -13, -4, 4, 11, -14, -1, -6, 2];
+   Expected_B  : constant Polynomial := [0, -1, 0, -1, -1, 1, -1, 1, -1, 0, -1];
 
    PK, SK_F, SK_Fp : Polynomial;
    E : Polynomial;
 
    -- Generic identity element for testing
-   Identity_Poly : constant Polynomial := (0 => 1, others => 0);
+   Identity_Poly : constant Polynomial := [0 => 1, others => 0];
 begin
    Put_Line ("=== NTRUEncrypt Test Suite ===");
 
@@ -76,25 +76,25 @@ begin
 
    -- TEST 9: Edge case for Modulo operation (Negatives)
    declare
-      Neg_Poly : constant Polynomial := (others => -1);
+      Neg_Poly : constant Polynomial := [others => -1];
       Mod_Poly : constant Polynomial := Modulo_Poly (Neg_Poly, 3);
-      Expected : constant Polynomial := (others => 2);
+      Expected : constant Polynomial := [others => 2];
    begin
       Check ("9. Modulo: Negative coefficients properly wrap around", Mod_Poly = Expected);
    end;
 
    -- TEST 10: Edge case for Centering boundary
    declare
-      Bound_Poly : constant Polynomial := (0 => 15, 1 => 16, others => 0);
+      Bound_Poly : constant Polynomial := [0 => 15, 1 => 16, others => 0];
       Cent_Poly  : constant Polynomial := Center (Bound_Poly, 32);
-      Expected   : constant Polynomial := (0 => 15, 1 => -16, others => 0);
+      Expected   : constant Polynomial := [0 => 15, 1 => -16, others => 0];
    begin
       Check ("10. Center: Handles upper bounds effectively (15->15, 16->-16 mod 32)", Cent_Poly = Expected);
    end;
 
    -- TEST 11: Error handling for uninvertible polynomials
    declare
-      Zero_Poly : constant Polynomial := (others => 0);
+      Zero_Poly : constant Polynomial := [others => 0];
       Did_Raise : Boolean := False;
       Discard   : Polynomial;
    begin
@@ -115,8 +115,8 @@ begin
 
    -- TEST 14: Full System Roundtrip with a new random message
    declare
-      M2 : constant Polynomial := (0 => 1, 3 => -1, 4 => 1, 9 => 1, others => 0);
-      R2 : constant Polynomial := (1 => 1, 5 => -1, 7 => 1, 10 => -1, others => 0);
+      M2 : constant Polynomial := [0 => 1, 3 => -1, 4 => 1, 9 => 1, others => 0];
+      R2 : constant Polynomial := [1 => 1, 5 => -1, 7 => 1, 10 => -1, others => 0];
       E2 : constant Polynomial := Encrypt (M2, R2, PK);
       D2 : constant Polynomial := Decrypt (E2, SK_F, SK_Fp);
    begin
