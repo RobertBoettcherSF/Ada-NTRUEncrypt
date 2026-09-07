@@ -51,7 +51,7 @@ package body NTRU is
    -- ==========================================
 
    function "+" (A, B : Polynomial) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
    begin
       for I in Degree_Type loop
          Result (I) := A (I) + B (I);
@@ -60,7 +60,7 @@ package body NTRU is
    end "+";
 
    function "-" (A, B : Polynomial) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
    begin
       for I in Degree_Type loop
          Result (I) := A (I) - B (I);
@@ -69,7 +69,7 @@ package body NTRU is
    end "-";
 
    function "*" (Scalar : Coefficient_Type; Poly : Polynomial) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
    begin
       for I in Degree_Type loop
          Result (I) := Scalar * Poly (I);
@@ -78,7 +78,7 @@ package body NTRU is
    end "*";
 
    function "*" (A, B : Polynomial) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
    begin
       for I in Degree_Type loop
          for J in Degree_Type loop
@@ -93,7 +93,7 @@ package body NTRU is
    end "*";
 
    function Modulo_Poly (Poly : Polynomial; Mod_Val : Positive) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
    begin
       for I in Degree_Type loop
          Result (I) := Modulo_Coefficient (Poly (I), Mod_Val);
@@ -102,7 +102,7 @@ package body NTRU is
    end Modulo_Poly;
 
    function Center (Poly : Polynomial; Mod_Val : Positive) return Polynomial is
-      Result : Polynomial := (others => 0);
+      Result : Polynomial := [others => 0];
       Half   : constant Coefficient_Type := Coefficient_Type ((Mod_Val - 1) / 2);
       Mod_C  : constant Coefficient_Type := Coefficient_Type (Mod_Val);
    begin
@@ -117,14 +117,14 @@ package body NTRU is
 
    function Invert (Poly : Polynomial; Mod_Val : Positive) return Polynomial is
       type Matrix is array (Degree_Type, Degree_Type) of Coefficient_Type;
-      M           : Matrix := (others => (others => 0));
-      I_Mat       : Matrix := (others => (others => 0));
+      M           : Matrix := [others => [others => 0]];
+      I_Mat       : Matrix := [others => [others => 0]];
       Pivot_Row   : Degree_Type := 0;
       Pivot_Found : Boolean;
       Inv_Val     : Coefficient_Type := 0;
       Temp_Val    : Coefficient_Type := 0;
       Factor      : Coefficient_Type := 0;
-      Result      : Polynomial := (others => 0);
+      Result      : Polynomial := [others => 0];
    begin
       -- Construct the circulant matrix of the polynomial
       for Row in Degree_Type loop
